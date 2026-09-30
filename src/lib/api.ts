@@ -1,6 +1,11 @@
 // API client for the PHP + MySQL backend (see /php-project).
 // Auth uses PHP native sessions (cookies), so every request sends credentials: 'include'.
-const BASE = '/api';
+const BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+
+// Use the same configurable backend for endpoints fetched outside the API client too.
+export function apiUrl(path: string) {
+  return `${BASE}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 export interface TimelineStep {
   label: string;
@@ -56,7 +61,7 @@ async function request(path: string, options: RequestInit = {}) {
     ...(options.body ? { 'Content-Type': 'application/json' } : {}),
     ...(options.headers as Record<string, string> | undefined),
   };
-  const res = await fetch(`${BASE}${path}`, { ...options, headers, credentials: 'include' });
+  const res = await fetch(apiUrl(path), { ...options, headers, credentials: 'include' });
   let data: any = null;
   try { data = await res.json(); } catch { /* no body */ }
   if (!res.ok) {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, Wifi, Download, Upload, Activity, RotateCcw } from 'lucide-react';
-import { api } from '../lib/api';
+import { api, apiUrl } from '../lib/api';
 
 interface Props { onNav: (p: string) => void; }
 
@@ -10,7 +10,7 @@ async function measurePing(): Promise<number> {
   const samples: number[] = [];
   for (let i = 0; i < 5; i++) {
     const start = performance.now();
-    await fetch(`/api/nettest/ping.php?_=${Date.now()}-${i}`, { cache: 'no-store' });
+    await fetch(apiUrl(`/nettest/ping.php?_=${Date.now()}-${i}`), { cache: 'no-store', credentials: 'include' });
     samples.push(performance.now() - start);
   }
   samples.shift(); // discard first (connection warm-up)
@@ -20,7 +20,7 @@ async function measurePing(): Promise<number> {
 async function measureDownload(): Promise<number> {
   const bytes = 4_000_000;
   const start = performance.now();
-  const res = await fetch(`/api/nettest/download.php?bytes=${bytes}&_=${Date.now()}`, { cache: 'no-store' });
+  const res = await fetch(apiUrl(`/nettest/download.php?bytes=${bytes}&_=${Date.now()}`), { cache: 'no-store', credentials: 'include' });
   await res.arrayBuffer();
   const seconds = (performance.now() - start) / 1000;
   return (bytes * 8) / seconds / 1_000_000; // Mbps
@@ -31,7 +31,7 @@ async function measureUpload(): Promise<number> {
   const payload = new Uint8Array(bytes);
   crypto.getRandomValues(payload.subarray(0, Math.min(65536, bytes))); // seed some randomness cheaply
   const start = performance.now();
-  await fetch(`/api/nettest/upload.php`, { method: 'POST', body: payload, cache: 'no-store' });
+  await fetch(apiUrl('/nettest/upload.php'), { method: 'POST', body: payload, cache: 'no-store', credentials: 'include' });
   const seconds = (performance.now() - start) / 1000;
   return (bytes * 8) / seconds / 1_000_000; // Mbps
 }
