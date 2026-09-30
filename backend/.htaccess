@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "^(config\.php|config\.local\.php|config\.local\.php\.example|schema\.sql|migration_v2\.sql|initialize_db\.php)$">
+    Require all denied
+</FilesMatch>

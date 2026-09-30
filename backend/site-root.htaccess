@@ -1,0 +1,12 @@
+Options -Indexes
+RewriteEngine On
+
+<FilesMatch "^(config\.php|config\.local\.php|config\.local\.php\.example|schema\.sql|migration_v2\.sql|initialize_db\.php)$">
+    Require all denied
+</FilesMatch>
+
+# Keep API and uploaded images on PHP; serve the Vite SPA for other paths.
+RewriteRule ^(api|uploads)/ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]

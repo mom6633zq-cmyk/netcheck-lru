@@ -1,10 +1,14 @@
 <?php
-// Production configuration is injected through environment variables.
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
-define('DB_NAME', getenv('DB_NAME') ?: 'netcheck_lru');
-define('DB_USER', getenv('DB_USER') ?: '');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+// Use an untracked local config file on shared hosting, or host environment variables.
+$localConfig = __DIR__ . '/config.local.php';
+if (is_file($localConfig)) {
+    require_once $localConfig;
+}
+defined('DB_HOST') || define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+defined('DB_PORT') || define('DB_PORT', getenv('DB_PORT') ?: '3306');
+defined('DB_NAME') || define('DB_NAME', getenv('DB_NAME') ?: 'netcheck_lru');
+defined('DB_USER') || define('DB_USER', getenv('DB_USER') ?: '');
+defined('DB_PASS') || define('DB_PASS', getenv('DB_PASS') ?: '');
 
 function get_db() {
     static $pdo = null;

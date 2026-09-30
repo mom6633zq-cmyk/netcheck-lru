@@ -14,3 +14,16 @@ This directory contains a deployable PHP API. It deliberately excludes the local
 - Create an administrator using the registration page, then promote that account to `admin` in the database. Do not deploy the XAMPP `seed.php` demo accounts.
 
 Use a persistent volume mounted at `/var/www/html/uploads` if issue images must survive container redeployments.
+
+## No-cost shared PHP hosting option
+
+For free shared hosting, serve the built Vite frontend and this PHP API from the same host name so browser requests are same-origin. Some free hosts block API requests from a separate site such as the current Vercel domain.
+
+1. Build the frontend with `npm run build`.
+2. Upload the contents of `dist/` to the host's web root.
+3. Upload `backend/api/`, `backend/includes/`, `backend/uploads/`, and `backend/config.php` to that same web root. Upload `backend/site-root.htaccess` as `.htaccess`.
+4. Create a MySQL database in the hosting panel and import `backend/schema.sql` into it.
+5. Copy `backend/config.local.php.example` to `config.local.php` in the web root and fill in the host-provided DB values. Never put those values in GitHub or chat.
+6. Enable HTTPS, then open the PHP host's domain (not the Vercel domain) and register the first account.
+
+Free plans can impose limits or add an interstitial/security layer. Check that API endpoints can be called by browser JavaScript on the same site before moving real user data.

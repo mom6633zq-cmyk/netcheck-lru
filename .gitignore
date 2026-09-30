@@ -11,3 +11,5 @@ Thumbs.db
 .DS_Store
 backend/uploads/*
 !backend/uploads/.gitkeep
+backend/config.local.php
+free-hosting-upload/

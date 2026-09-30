@@ -1,0 +1,8 @@
+<?php
+// Copy this to config.local.php on your PHP host and fill in the database values there.
+// Never commit the completed config.local.php file.
+define('DB_HOST', '');
+define('DB_PORT', '3306');
+define('DB_NAME', '');
+define('DB_USER', '');
+define('DB_PASS', '');
