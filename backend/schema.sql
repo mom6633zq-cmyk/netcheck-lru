@@ -8,9 +8,11 @@ CREATE TABLE IF NOT EXISTS Users (
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   name VARCHAR(100) NOT NULL,
+  student_code VARCHAR(20),
   email VARCHAR(100) NOT NULL UNIQUE,
   role VARCHAR(20) NOT NULL DEFAULT 'user',
   phone VARCHAR(20),
+  faculty VARCHAR(150),
   status VARCHAR(20) NOT NULL DEFAULT 'active',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -77,9 +79,6 @@ CREATE TABLE IF NOT EXISTS Problem_History (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---- ส่วนขยายเพิ่มเติม (ใช้กับหน้าจัดการผู้ใช้งาน / ตั้งค่าระบบ ตามภาพประกอบ 3-17, 3-18) ----
-ALTER TABLE Users ADD COLUMN IF NOT EXISTS student_code VARCHAR(20) NULL AFTER name;
-ALTER TABLE Users ADD COLUMN IF NOT EXISTS faculty VARCHAR(150) NULL AFTER phone;
-
 CREATE TABLE IF NOT EXISTS Settings (
   setting_key VARCHAR(60) PRIMARY KEY,
   setting_value TEXT
