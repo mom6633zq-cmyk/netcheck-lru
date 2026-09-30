@@ -1,0 +1,7 @@
+.env
+.env.*
+uploads/*
+!uploads/.gitkeep
+schema.sql
+migration_v2.sql
+README.md
